@@ -1,4 +1,4 @@
-package com.example.hotel_management.dtoentity;
+package com.example.hotel_management.DTO;
 
 import com.example.hotel_management.Entity.Chambre;
 import com.example.hotel_management.Entity.Client;

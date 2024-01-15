@@ -18,19 +18,30 @@ public class Reservation{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chambre_id")
     private Chambre chambre;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Column(name = "date_reservation")
     private Date dateReservation;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date_fin_reservation")
     private Date dateFinReservation;
+
+    @PrePersist
+    public void onPersist(){
+        this.dateReservation= new Date();
+    }
+
+    public Reservation(Chambre chambre, Client client, Date dateFinReservation) {
+        this.chambre = chambre;
+        this.client = client;
+        this.dateFinReservation = dateFinReservation;
+    }
 }

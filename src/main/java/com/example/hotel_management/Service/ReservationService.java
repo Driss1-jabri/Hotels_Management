@@ -1,4 +1,4 @@
-package com.example.hotel_management.services;
+package com.example.hotel_management.Service;
 
 import com.example.hotel_management.Entity.Reservation;
 import com.example.hotel_management.repository.ReservationRepo;
