@@ -33,9 +33,9 @@ public class ReservationController {
     }
 
     @PostMapping
-    public String saveReservation(@RequestBody Reservation reservation) {
+    public ResponseEntity<Reservation> saveReservation(@RequestBody Reservation reservation) {
         Reservation savedReservation = reservationService.saveReservation(reservation);
-        return "hello";
+        return  new ResponseEntity<>(savedReservation,HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
