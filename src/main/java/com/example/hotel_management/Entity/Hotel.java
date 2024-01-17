@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Blob;
 import java.util.List;
 
 @Getter
@@ -26,4 +27,6 @@ public class Hotel {
     private List<Chambre> chambres;
 
     private String ville;
+    @Lob
+    private Blob image;
 }
