@@ -53,14 +53,5 @@ public class HotelController {
         hotelService.deleteHotel(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @GetMapping
-    public List<HotelDTO> getHotels(){
-        List<Hotel> hotels = hotelService.getAllHotels();
-        List<HotelDTO> hotelsDTO = new ArrayList<>();
-        for(Hotel hotel : hotels){
-            HotelDTO hotelDTO = new HotelDTO(hotel);
-                    hotelsDTO.add(hotelDTO);
-        }
-        return hotelsDTO;
-    }
+
 }
