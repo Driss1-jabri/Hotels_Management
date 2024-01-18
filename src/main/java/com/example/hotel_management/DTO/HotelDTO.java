@@ -31,15 +31,15 @@ public class HotelDTO {
         this.ville = hotel.getVille();
 
         try {
-            // Handle the SQLException here
+
             this.imageBytes = hotel.getImage().getBytes(1, (int) hotel.getImage().length());
         } catch (SQLException e) {
-            // You might want to log the exception or throw a runtime exception
+
             throw new RuntimeException("Failed to read Blob data", e);
         }
     }
 
-    // Static method to convert a list of Hotel entities to a list of HotelDTO
+
     public static List<HotelDTO> convertToDTOList(List<Hotel> hotels) {
         return hotels.stream().map(HotelDTO::new).collect(Collectors.toList());
     }
