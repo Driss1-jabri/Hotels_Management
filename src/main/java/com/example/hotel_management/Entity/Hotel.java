@@ -23,7 +23,7 @@ public class Hotel {
     private String nom;
     private String adresse;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")  // Specify the type of the relationship
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
     private List<Chambre> chambres;
 
     private String ville;
