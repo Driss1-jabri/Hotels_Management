@@ -1,5 +1,10 @@
 package com.example.hotel_management.Controller;
 
+import com.example.hotel_management.Entity.Chambre;
+import com.example.hotel_management.Entity.Client;
+import com.example.hotel_management.Repository.ChambreRepo;
+import com.example.hotel_management.Repository.ClientRepo;
+import com.example.hotel_management.Service.ClientService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.hotel_management.Entity.Reservation;
@@ -14,10 +19,16 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/reservations")
+@CrossOrigin("http://localhost:3000")
 public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
+    @Autowired
+    private ClientRepo clientRepo;
+    @Autowired
+    private ChambreRepo chambreRepo;
+
 
     @GetMapping
     public ResponseEntity<List<Reservation>> getAllReservations() {
@@ -32,9 +43,15 @@ public class ReservationController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<Reservation> saveReservation(@RequestBody Reservation reservation) {
+    @PostMapping("/{roomId}/{ClientId}")
+    public ResponseEntity<Reservation> saveReservation(@RequestBody Reservation reservation,@PathVariable Long roomId ,@PathVariable Long ClientId) {
+        Client client = clientRepo.findById(ClientId).get();
+        Chambre chambre = chambreRepo.findById(roomId).get();
+        reservation.setClient(client);
+        reservation.setChambre(chambre);
         Reservation savedReservation = reservationService.saveReservation(reservation);
+        client.getReservations().add(savedReservation);
+        chambre.getReservations().add(savedReservation);
         return  new ResponseEntity<>(savedReservation,HttpStatus.CREATED);
     }
 

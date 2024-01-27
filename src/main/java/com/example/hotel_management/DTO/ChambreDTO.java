@@ -1,5 +1,6 @@
 package com.example.hotel_management.DTO;
 
+import com.example.hotel_management.Entity.Chambre;
 import com.example.hotel_management.Entity.TypeChambre;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,15 +18,12 @@ public class ChambreDTO {
     private int capacite;
     private List<ReservationDto> reservations;
 
-    public ChambreDTO(Long id, String nom, TypeChambre type, Double prix, Boolean disponibilite, int capacite, List<ReservationDto> reservations) {
-        this.id = id;
-        this.nom = nom;
-        this.type = type;
-        this.prix = prix;
-        this.disponibilite = disponibilite;
-        this.capacite = capacite;
-        this.reservations = reservations;
-
+    public ChambreDTO(Chambre chambre) {
+        this.id = chambre.getId();
+        this.nom = chambre.getNom();
+        this.type = chambre.getType();
+        this.prix = chambre.getPrix();
+        this.disponibilite = chambre.getDisponibilite();
+        this.capacite = chambre.getCapacite();
     }
-
 }

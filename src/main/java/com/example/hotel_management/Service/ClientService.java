@@ -17,6 +17,7 @@ public class ClientService {
         return clientRepo.findAll();
     }
     public Optional<Client> getClientById(Long id){
+
         return clientRepo.findById(id);
     }
     public Client saveClient(Client client){

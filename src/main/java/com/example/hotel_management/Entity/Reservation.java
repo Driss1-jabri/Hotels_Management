@@ -1,6 +1,8 @@
 package com.example.hotel_management.Entity;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,10 +22,12 @@ public class Reservation{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chambre_id")
+    @JsonIgnore
     private Chambre chambre;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private Client client;
 
     @Temporal(TemporalType.DATE)

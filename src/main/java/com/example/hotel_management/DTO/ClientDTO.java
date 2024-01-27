@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor @Data
-
+@Data
+@NoArgsConstructor
 public class ClientDTO {
     private Long id;
     private String nom;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
 
@@ -41,7 +42,18 @@ public class Chambre {
 
     @Lob
     private Blob image;
-    private String imageBase64;
+    @Transient
+    private String ImageBase64;
 
-
+    public String getImageBase64() {
+        if (image != null) {
+            try {
+                byte[] bytes = image.getBytes(1, (int) image.length());
+                return Base64.getEncoder().encodeToString(bytes);
+            } catch (SQLException e) {
+                throw new RuntimeException("Error converting Blob to Base64", e);
+            }
+        }
+        return null;
+    }
 }

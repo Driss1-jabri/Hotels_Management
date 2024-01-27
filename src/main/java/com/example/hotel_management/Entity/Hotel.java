@@ -1,5 +1,6 @@
 package com.example.hotel_management.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Hotel {
     private String adresse;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
+    @JsonIgnore
     private List<Chambre> chambres;
 
     private String ville;

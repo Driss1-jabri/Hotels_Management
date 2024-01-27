@@ -7,6 +7,8 @@ import com.example.hotel_management.Entity.Hotel;
 import com.example.hotel_management.Repository.HotelRepo;
 import com.example.hotel_management.Service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +46,10 @@ public class HotelController {
         Hotel hotel = hotelService.getHotelById(id).get();
         List<Chambre> chambres = hotel.getChambres();
 
-        
-        chambres.forEach(chambre -> convertImageToBase64(chambre));
+        for (Chambre chambre : chambres) {
+            // Set the Base64 image in each chambre
+            chambre.setImageBase64(chambre.getImageBase64());
+        }
 
         return chambres;
     }
@@ -63,12 +67,20 @@ public class HotelController {
         }
     }
 
+
     @GetMapping("/{id}")
-    public HotelDTO getHotelById(@PathVariable Long id) {
-        Hotel hotel = hotelService.getHotelById(id).get();
-        HotelDTO hotelDTO = new HotelDTO(hotel);
-        return hotelDTO;
+    public ResponseEntity<HotelDTO> getHotelById(@PathVariable Long id) {
+        Optional<Hotel> optionalHotel = hotelService.getHotelById(id);
+
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            HotelDTO hotelDTO = new HotelDTO(hotel);
+            return new ResponseEntity<>(hotelDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 
     @PostMapping
     public ResponseEntity<Hotel> saveHotel(@RequestBody Hotel hotel) {
@@ -81,6 +93,25 @@ public class HotelController {
     public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
         hotelService.deleteHotel(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{hotelId}/rooms/{roomId}")
+    public ResponseEntity<ChambreDTO> getRoomOfHotelById(@PathVariable Long hotelId, @PathVariable Long roomId) {
+        Optional<Hotel> optionalHotel = hotelService.getHotelById(hotelId);
+
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            for (Chambre chambre : hotel.getChambres()) {
+                if (chambre.getId().equals(roomId)) {
+                    ChambreDTO chambreDTO = new ChambreDTO(chambre);
+                    return new ResponseEntity<>(chambreDTO, HttpStatus.OK);
+                }
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
