@@ -14,7 +14,7 @@ import java.util.Date;
 public class ReservationDto {
     private Long id;
     private Chambre chambre;
-    private Client client;
+    private Long clientId;
     private Date dateReservation;
     private Date dateFinReservation;
 }

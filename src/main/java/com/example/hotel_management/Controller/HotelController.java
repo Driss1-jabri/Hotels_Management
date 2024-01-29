@@ -1,17 +1,27 @@
 package com.example.hotel_management.Controller;
 
+import com.example.hotel_management.DTO.ChambreDTO;
 import com.example.hotel_management.DTO.HotelDTO;
+import com.example.hotel_management.Entity.Chambre;
 import com.example.hotel_management.Entity.Hotel;
+import com.example.hotel_management.Repository.HotelRepo;
 import com.example.hotel_management.Service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/hotels")
 @CrossOrigin(origins = "*")
 public class HotelController {
@@ -32,13 +42,46 @@ public class HotelController {
         return hotelDTOS;
 
     }
+    @GetMapping(value = "/{id}/rooms", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Chambre> getRoomsById(@PathVariable Long id) {
+        Hotel hotel = hotelService.getHotelById(id).get();
+        List<Chambre> chambres = hotel.getChambres();
+
+        for (Chambre chambre : chambres) {
+            // Set the Base64 image in each chambre
+            chambre.setImageBase64(chambre.getImageBase64());
+        }
+
+        return chambres;
+    }
+
+    private void convertImageToBase64(Chambre chambre) {
+        try {
+            if (chambre.getImage() != null && chambre.getImage().length() > 0) {
+                byte[] imageBytes = chambre.getImage().getBytes(1, (int) chambre.getImage().length());
+                String imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
+                chambre.setImageBase64(imageBase64);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+
 
     @GetMapping("/{id}")
-    public HotelDTO getHotelById(@PathVariable Long id) {
-        Hotel hotel = hotelService.getHotelById(id).get();
-        HotelDTO hotelDTO = new HotelDTO(hotel);
-        return hotelDTO;
+    public ResponseEntity<HotelDTO> getHotelById(@PathVariable Long id) {
+        Optional<Hotel> optionalHotel = hotelService.getHotelById(id);
+
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            HotelDTO hotelDTO = new HotelDTO(hotel);
+            return new ResponseEntity<>(hotelDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
 
     @PostMapping
     public ResponseEntity<Hotel> saveHotel(@RequestBody Hotel hotel) {
@@ -52,4 +95,24 @@ public class HotelController {
         hotelService.deleteHotel(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/{hotelId}/rooms/{roomId}")
+    public ResponseEntity<ChambreDTO> getRoomOfHotelById(@PathVariable Long hotelId, @PathVariable Long roomId) {
+        Optional<Hotel> optionalHotel = hotelService.getHotelById(hotelId);
+
+        if (optionalHotel.isPresent()) {
+            Hotel hotel = optionalHotel.get();
+            for (Chambre chambre : hotel.getChambres()) {
+                if (chambre.getId().equals(roomId)) {
+                    ChambreDTO chambreDTO = new ChambreDTO(chambre);
+                    return new ResponseEntity<>(chambreDTO, HttpStatus.OK);
+                }
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
