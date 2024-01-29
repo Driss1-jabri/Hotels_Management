@@ -23,7 +23,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/hotels")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class HotelController {
 
     @Autowired
