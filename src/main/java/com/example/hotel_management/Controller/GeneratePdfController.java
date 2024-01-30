@@ -1,7 +1,9 @@
 package com.example.hotel_management.Controller;
 
 
+import com.example.hotel_management.Entity.Reservation;
 import com.example.hotel_management.Service.GeneratePdfService;
+import com.example.hotel_management.Service.ReservationService;
 import com.lowagie.text.DocumentException;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.Thymeleaf;
@@ -31,21 +34,28 @@ public class GeneratePdfController {
     private TemplateEngine thymeleafTemplateEngine;
     @Autowired
     private GeneratePdfService emailSendService;
+    @Autowired
+    private ReservationService reservationService;
+    @GetMapping("/facture/{id}")
+    public String getPdfFacture(@PathVariable Long id ,Model model){
 
-    @GetMapping("/facture")
-    public String getPdfFacture(Model model){
+        Reservation reservation=reservationService.getReservationById(id).get();
+        model.addAttribute("reservation",reservation);
 
         return "toPdfFile";
     }
 
-    @GetMapping("/sendmail")
+    @GetMapping("/sendmail/{id}")
     @ResponseBody
-    public String sendMail() throws MessagingException, DocumentException, IOException {
+    public String sendMail(@PathVariable Long id) throws MessagingException, DocumentException, IOException {
         //emailSendService.sendEmail("moadelmaazouzi@gmail.com","hello moad ","java Email");
 
 
         Context context= new Context();
-        emailSendService.sendEmailWithAttachment("moadelmaazouzi@gmail.com","facture","facture","facture", context);
+        Reservation reservation= reservationService.getReservationById(id).get();
+        context.setVariable("reservation",reservation);
+        String body="bonjour voissi votre facture de reservation distribuer par votre hotel reserver"+reservation.getChambre().getHotel().getNom();
+        emailSendService.sendEmailWithAttachment(reservation.getClient().getEmail(),body,"facture","facture", context);
         return "message envoyer";
     }
 
