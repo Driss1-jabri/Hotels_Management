@@ -113,5 +113,17 @@ public class HotelController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Hotel> updateHotel(@PathVariable Long id, @RequestBody Hotel updatedHotel) {
+        try {
+            Hotel updated = hotelService.updateHotel(id, updatedHotel);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
 
 }

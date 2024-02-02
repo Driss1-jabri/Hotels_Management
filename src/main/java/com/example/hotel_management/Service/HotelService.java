@@ -42,4 +42,21 @@ public class HotelService {
             throw new RuntimeException("Error encoding image to base64", e);
         }
     }
+    public Hotel updateHotel(Long id, Hotel updatedHotel) {
+        Optional<Hotel> optionalHotel = hotelRepo.findById(id);
+
+        if (optionalHotel.isPresent()) {
+            Hotel existingHotel = optionalHotel.get();
+
+            existingHotel.setNom(updatedHotel.getNom());
+            existingHotel.setAdresse(updatedHotel.getAdresse());
+            existingHotel.setVille(updatedHotel.getVille());
+
+            return hotelRepo.save(existingHotel);
+        } else {
+
+            throw new RuntimeException("Hotel not found with id: " + id);
+        }
+    }
+
 }

@@ -36,10 +36,10 @@ public class HotelManagementApplication {
     }
 
     private void initializeData() {
-        Hotel Ibis = createHotel("Ibis", "Parcelle F Zone Casanearshore, Casablanca 20190", "Casablanca", "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\IbisHotel.png");
-        Hotel Atlas_Sky = createHotel("Atlas Sky", "route El Jadida r.p. 8, parc de l'Office des Changes, Casablanca, Morocco", "Casablanca", "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\Atlas_SkyHotel.png");
-        Hotel Hyat = createHotel("Hyatt", "Pl. des Nations Unies, Casablanca 20000", "Casablanca", "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\HyatHotel.png");
-        Hotel Radisson = createHotel("Radisson", "2 Rue Mohamed Diouri, Casablanca 20300", "Casablanca", "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\RadissonHotel.png");
+        Hotel Ibis = createHotel("Ibis", "Parcelle F Zone Casanearshore, Casablanca 20190", "Casablanca", "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\IbisHotel.png");
+        Hotel Atlas_Sky = createHotel("Atlas Sky", "route El Jadida r.p. 8, parc de l'Office des Changes, Casablanca, Morocco", "Casablanca", "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\Atlas_SkyHotel.png");
+        Hotel Hyat = createHotel("Hyatt", "Pl. des Nations Unies, Casablanca 20000", "Casablanca", "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\HyatHotel.png");
+        Hotel Radisson = createHotel("Radisson", "2 Rue Mohamed Diouri, Casablanca 20300", "Casablanca", "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\RadissonHotel.png");
 
 
         hotelService.saveHotel(Ibis);
@@ -57,11 +57,11 @@ public class HotelManagementApplication {
 
 
     private void initializeChambres(Hotel hotel) {
-        Chambre chambre1 = createChambre("SINGLE", TypeChambre.SINGLE, hotel, 100.0, true, 1, "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-8.png");
-        Chambre chambre2 = createChambre("TRIPLE", TypeChambre.TRIPLE, hotel, 150.0, true, 3, "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-5.png");
-        Chambre chambre3 = createChambre("FAMILIALE", TypeChambre.FAMILIALE, hotel, 300.0, true, 5, "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-7.png");
-        Chambre chambre4 = createChambre("SUITE", TypeChambre.SUITE, hotel, 300.0, true, 5, "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-6.png");
-        Chambre chambre5 = createChambre("STANDARD", TypeChambre.STANDARD, hotel, 250.0, true, 4, "C:\\Users\\hicham\\Desktop\\react project\\Hotel_Management\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-2.png");
+        Chambre chambre1 = createChambre("SINGLE", TypeChambre.SINGLE, hotel, 100.0, true, 1, "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-8.png");
+        Chambre chambre2 = createChambre("TRIPLE", TypeChambre.TRIPLE, hotel, 150.0, true, 3, "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-5.png");
+        Chambre chambre3 = createChambre("FAMILIALE", TypeChambre.FAMILIALE, hotel, 300.0, true, 5, "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-7.png");
+        Chambre chambre4 = createChambre("SUITE", TypeChambre.SUITE, hotel, 300.0, true, 5, "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-6.png");
+        Chambre chambre5 = createChambre("STANDARD", TypeChambre.STANDARD, hotel, 250.0, true, 4, "C:\\Users\\user\\Desktop\\s3\\web\\Project\\Hotels_Management_Frontend\\src\\Assets\\Images\\room-2.png");
 
         chambreService.saveChambre(chambre1);
         chambreService.saveChambre(chambre2);
