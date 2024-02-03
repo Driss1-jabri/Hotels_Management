@@ -31,4 +31,12 @@ public class Hotel {
     private String ville;
     @Lob
     private Blob image;
+
+    public Hotel(Long id, String nom, String adresse,  String ville, Blob image) {
+        this.id = id;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.image = image;
+    }
 }
