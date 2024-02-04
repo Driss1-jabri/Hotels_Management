@@ -51,6 +51,7 @@ public class HotelService {
             existingHotel.setNom(updatedHotel.getNom());
             existingHotel.setAdresse(updatedHotel.getAdresse());
             existingHotel.setVille(updatedHotel.getVille());
+            existingHotel.setImage(updatedHotel.getImage());
 
             return hotelRepo.save(existingHotel);
         } else {

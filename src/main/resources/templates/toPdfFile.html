@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+</head>
+<body style="margin: 50px 50px">
+<div style=" border: 6px solid black;padding: 15px 40px">
+
+    <h1 style="text-align: center ;
+        border: 2px solid dodgerblue;
+        padding: 5px;
+        ">
+        Votre paiement a été accepté
+    </h1>
+    <div style="margin:40px 0 10px 0  ;justify-content: center">
+        <h1 style="margin-bottom: 35px ;color:darkred ;color:darkred ">Detail de Paiment:</h1>
+        <p> Date de paiement :</p>
+        <p> N° de paiement:</p>
+        <p> N° de carte de paiement</p>
+    </div>
+    <div style="margin:0px 0 10px 0">
+        <h1 style="margin-bottom: 35px ;color:darkred">Information du client:</h1>
+        <p> Nom: <span th:text="${reservation.getClient().getNom()}"></span></p>
+        <p> Prénom:<span th:text="${reservation.getClient().getPrenom()}"></span></p>
+        <p> Email:<span th:text="${reservation.getClient().getEmail()}"></span></p>
+        <p> Téléphone:<span th:text="${reservation.getClient().getTelephone()}"></span></p>
+    </div>
+    <div style="margin:0px 0 10px 0">
+        <h1 style="margin-bottom: 35px ;color:darkred">Detail de la reservation:</h1>
+        <p>Nom de l'hôtel:<span th:text="${reservation.getChambre().getHotel().getNom()}"></span></p>
+        <p> Type de chambre:<span th:text="${reservation.getChambre().getType()}"></span> </p>
+        <p> Nombre de personnes:<span th:text="${reservation.getChambre().getCapacite()}"></span></p>
+        <p> Date de réservation:<span th:text="${reservation.getDateReservation()}"></span></p>
+        <p> Date de fin de réservation:<span th:text="${reservation.getDateFinReservation()}"></span></p>
+        <p> TTC :<span th:text="${reservation.getChambre().getPrix()}"></span> DH</p>
+    </div>
+
+</div>
+</body>
+</html>

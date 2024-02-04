@@ -13,7 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -23,6 +26,7 @@ import java.util.Optional;
 @RestController
 @CrossOrigin("http://localhost:3000")
 @RequestMapping("/hotels")
+
 public class HotelController {
 
     @Autowired
@@ -123,7 +127,21 @@ public class HotelController {
         }
     }
 
-
+    @PutMapping("/zte/{id}")
+    public ResponseEntity<String> updateHotelWithImage(
+            @PathVariable("id") Long id,
+            @RequestParam("image") MultipartFile file,
+            @RequestParam("nom") String nom,
+            @RequestParam("adresse") String adresse,
+            @RequestParam("ville") String ville) throws IOException, SQLException {
+        byte[] img=file.getBytes();
+        Blob img1=new javax.sql.rowset.serial.SerialBlob(img);
+        System.out.println(img.length);
+        System.out.println(nom);
+        Hotel hotel =new Hotel(id,nom,adresse,ville,img1);
+        hotelService.updateHotel(id,hotel);
+        return ResponseEntity.ok("Hotel updated successfully");
+    }
 
 
 }

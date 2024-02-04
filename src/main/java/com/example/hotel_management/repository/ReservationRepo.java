@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservationRepo extends JpaRepository<Reservation, Long> {
     // You can add custom queries or methods if needed
+
 }
