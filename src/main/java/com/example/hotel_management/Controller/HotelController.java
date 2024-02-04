@@ -51,7 +51,7 @@ public class HotelController {
         List<Chambre> chambres = hotel.getChambres();
 
         for (Chambre chambre : chambres) {
-            // Set the Base64 image in each chambre
+
             chambre.setImageBase64(chambre.getImageBase64());
         }
 
@@ -87,10 +87,25 @@ public class HotelController {
 
 
     @PostMapping
-    public ResponseEntity<Hotel> saveHotel(@RequestBody Hotel hotel) {
-        Hotel savedHotel = hotelService.saveHotel(hotel);
-        return new ResponseEntity<>(savedHotel, HttpStatus.CREATED);
+    public ResponseEntity<Hotel> saveHotel(
+            @RequestParam("nom") String nom,
+            @RequestParam("adresse") String adresse,
+            @RequestParam("ville") String ville,
+            @RequestParam(value = "image", required = false) MultipartFile image
+    ) {
+        try {
+            byte[] imgBytes = (image != null) ? image.getBytes() : null;
+            Blob imgBlob = (imgBytes != null) ? new javax.sql.rowset.serial.SerialBlob(imgBytes) : null;
+
+            Hotel hotel = new Hotel(null, nom, adresse, ville, imgBlob);
+            Hotel savedHotel = hotelService.saveHotel(hotel);
+
+            return new ResponseEntity<>(savedHotel, HttpStatus.CREATED);
+        } catch (IOException | SQLException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
 
     @DeleteMapping("/{id}")

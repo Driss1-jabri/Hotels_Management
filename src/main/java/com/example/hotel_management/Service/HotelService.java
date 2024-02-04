@@ -38,7 +38,7 @@ public class HotelService {
             byte[] imageData = Files.readAllBytes(path);
             return Base64.getEncoder().encodeToString(imageData);
         } catch (Exception e) {
-            // Handle the exception or throw it as a runtime exception
+
             throw new RuntimeException("Error encoding image to base64", e);
         }
     }
