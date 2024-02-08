@@ -4,7 +4,9 @@ import com.example.hotel_management.DTO.ChambreDTO;
 import com.example.hotel_management.DTO.HotelDTO;
 import com.example.hotel_management.Entity.Chambre;
 import com.example.hotel_management.Entity.Hotel;
+import com.example.hotel_management.Entity.TypeChambre;
 import com.example.hotel_management.Repository.HotelRepo;
+import com.example.hotel_management.Service.ChambreService;
 import com.example.hotel_management.Service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -31,7 +33,8 @@ public class HotelController {
 
     @Autowired
     private HotelService hotelService;
-
+    @Autowired
+    private ChambreService chambreService;
     @GetMapping
     public List<HotelDTO> getAllHotels() {
         List<Hotel> hotels= hotelService.getAllHotels();
@@ -83,6 +86,11 @@ public class HotelController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+    @GetMapping("/chambre/{id}")
+    public List<Chambre> getChambreByHotelId(@PathVariable Long id){
+        Optional<Hotel> hotel = hotelService.getHotelById(id);
+        return hotel.get().getChambres();
     }
 
 
@@ -157,6 +165,46 @@ public class HotelController {
         hotelService.updateHotel(id,hotel);
         return ResponseEntity.ok("Hotel updated successfully");
     }
+    @DeleteMapping("/chambre/{id}")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+        chambreService.deleteChambreById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @PostMapping("/{hotelId}/rooms")
+    public ResponseEntity<Chambre> addRoomToHotel(
+            @PathVariable Long hotelId,
+            @RequestParam("nom") String nom,
+            @RequestParam("type") TypeChambre type,
+            @RequestParam("prix") Double prix,
+            @RequestParam("capacite") int capacite,
+            @RequestParam(value = "image", required = false) MultipartFile image
+    ) {
+        try {
+            Optional<Hotel> optionalHotel = hotelService.getHotelById(hotelId);
+            if (optionalHotel.isPresent()) {
+                Hotel hotel = optionalHotel.get();
+                byte[] imgBytes = (image != null) ? image.getBytes() : null;
+                Blob imgBlob = (imgBytes != null) ? new javax.sql.rowset.serial.SerialBlob(imgBytes) : null;
+
+                Chambre chambre = new Chambre();
+                chambre.setNom(nom);
+                chambre.setType(type);
+                chambre.setHotel(hotel);
+                chambre.setPrix(prix);
+                chambre.setDisponibilite(true);
+                chambre.setCapacite(capacite);
+                chambre.setImage(imgBlob);
+
+                Chambre savedChambre = chambreService.saveChambre(chambre);
+                return new ResponseEntity<>(savedChambre, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException | SQLException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 }
