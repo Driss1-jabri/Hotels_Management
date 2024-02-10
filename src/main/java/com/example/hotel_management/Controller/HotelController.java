@@ -205,6 +205,55 @@ public class HotelController {
         }
     }
 
+    //
+    @PutMapping("/{hotelId}/rooms/{roomID}")
+    public ResponseEntity<Chambre> apdateRoomToHotel(
+            @PathVariable Long hotelId,
+            @PathVariable Long roomID,
+            @RequestParam("nom") String nom,
+            @RequestParam("type") TypeChambre type,
+            @RequestParam("prix") Double prix,
+            @RequestParam("capacite") int capacite,
+            @RequestParam(value = "image", required = false) MultipartFile image
+    ) {
+        try {
+            Optional<Hotel> optionalHotel = hotelService.getHotelById(hotelId);
+            if (optionalHotel.isPresent()) {
+                Hotel hotel = optionalHotel.get();
 
 
+                for ( int i=0 ;i<hotel.getChambres().size();i++
+                     ) {
+                    if (hotel.getChambres().get(i).getId()==roomID){
+                        Chambre chambre=hotel.getChambres().get(i);
+                        byte[] imgBytes = (image != null) ? image.getBytes() : null;
+                        Blob imgBlob = (imgBytes != null) ? new javax.sql.rowset.serial.SerialBlob(imgBytes) : null;
+
+                        chambre.setNom(nom);
+                        chambre.setType(type);
+                        chambre.setHotel(hotel);
+                        chambre.setPrix(prix);
+                        chambre.setDisponibilite(true);
+                        chambre.setCapacite(capacite);
+                        if (imgBlob!=null)
+                            chambre.setImage(imgBlob);
+                        hotelService.saveHotel(hotel);
+
+                    }
+
+                }
+
+
+
+                return new ResponseEntity<>(new Chambre(), HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException | SQLException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //
 }
+
+
