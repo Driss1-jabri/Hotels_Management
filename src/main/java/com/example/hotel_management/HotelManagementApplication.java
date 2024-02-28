@@ -30,8 +30,8 @@ public class HotelManagementApplication {
         SpringApplication.run(HotelManagementApplication.class, args);
     }
 
-    //@PostConstruct
-    /*public void init() throws IOException {
+    @PostConstruct
+    public void init() throws IOException {
         initializeData();
     }
 
@@ -126,5 +126,5 @@ public class HotelManagementApplication {
         }
     }
 
-*/
+
 }

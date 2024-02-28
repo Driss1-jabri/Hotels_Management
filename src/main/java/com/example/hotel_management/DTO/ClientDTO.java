@@ -1,11 +1,12 @@
 package com.example.hotel_management.DTO;
 
-
+import com.example.hotel_management.Entity.Client;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -15,16 +16,16 @@ public class ClientDTO {
     private String prenom;
     private String email;
     private String telephone;
-    private List<ReservationDto> reservations;
 
-    public ClientDTO(Long id, String nom, String prenom, String email, String telephone, List<ReservationDto> reservations) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-        this.telephone = telephone;
-        this.reservations = reservations;
+    public ClientDTO(Client client) {
+        this.id = client.getId();
+        this.nom = client.getNom();
+        this.prenom = client.getPrenom();
+        this.email = client.getEmail();
+        this.telephone = client.getTelephone();
+    }
 
+    public static List<ClientDTO> convertToDTOList(List<Client> clients) {
+        return clients.stream().map(ClientDTO::new).collect(Collectors.toList());
     }
 }
-

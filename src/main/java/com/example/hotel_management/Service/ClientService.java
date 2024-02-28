@@ -23,7 +23,12 @@ public class ClientService {
     public Client saveClient(Client client){
         return clientRepo.save(client);
     }
-    public void deleteClient(Client client){
-        clientRepo.delete(client);
+    public void deleteClient(Long id) {
+        Optional<Client> clientOptional = clientRepo.findById(id);
+        if (clientOptional.isPresent()) {
+            clientRepo.deleteById(id);
+        } else {
+            throw new RuntimeException("Client not found with id: " + id);
+        }
     }
 }
